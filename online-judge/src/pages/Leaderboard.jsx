@@ -34,26 +34,21 @@ const Leaderboard = () => {
 
   // Compute sorted leaderboard and assign ranks, handling ties
   const processedLeaderboard = () => {
-    const list = [...leaderboard];
-    list.sort((a, b) => b.problemsSolved - a.problemsSolved);
-    const result = [];
-    let prevSolved = null;
-    let prevRank = 0;
-    list.forEach((user, index) => {
-      let rank;
-      if (index === 0) {
-        rank = 1;
-      } else if (user.problemsSolved === prevSolved) {
-        rank = prevRank;
-      } else {
-        rank = index + 1;
-      }
-      result.push({ ...user, rank });
-      prevSolved = user.problemsSolved;
-      prevRank = rank;
-    });
-    return result;
-  };
+  const list = [...leaderboard].sort(
+    (a, b) => b.problemsSolved - a.problemsSolved
+  );
+
+  let denseRank = 1;
+  let prevSolved = null;
+
+  return list.map((user, idx) => {
+    if (idx > 0 && user.problemsSolved !== prevSolved) {
+      denseRank += 1;
+    }
+    prevSolved = user.problemsSolved;
+    return { ...user, rank: denseRank };
+  });
+};
 
   const rankedList = processedLeaderboard();
 
@@ -119,8 +114,16 @@ const Leaderboard = () => {
                   variants={rowVariants}
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-white flex items-center">
-                    {getMedalIcon(user.rank)}
-                    {user.rank > 3 && <span className="ml-2">{user.rank}</span>}
+                    {user.rank === 1 && (
+                      <Award className="w-5 h-5 text-yellow-400" title="Gold" />
+                    )}
+                    {user.rank === 2 && (
+                      <Award className="w-5 h-5 text-gray-400" title="Silver" />
+                    )}
+                    {user.rank === 3 && (
+                      <Award className="w-5 h-5 text-orange-400" title="Bronze" />
+                    )}
+                    {user.rank > 3 && <span className="ml-1">{user.rank}</span>}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">
                     {user.username}
