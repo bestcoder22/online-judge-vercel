@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Small centered underline under active link */
+.small-underline::after {
+  content: '';
+  display: block;
+  margin: 0 auto;
+  /* adjust width as needed for shorter underline */
+  width: 40%;
+  height: 2px;
+  background-color: currentColor;
+  margin-top: 2px;
+}
+
+/* Gradient border effect: 
+   .gradient-border positions behind the img, with animated background.
+   animate-gradient-bg changes background-position to create a moving gradient.
+*/
+.gradient-border {
+  background: linear-gradient(270deg, #ff6ec4, #7873f5, #42e695, #ff6ec4);
+  background-size: 600% 600%;
+  z-index: 0;
+}
+
+@keyframes gradient-bg-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-bg {
+  animation: gradient-bg-animation 4s ease infinite;
+}
+
+/* Ensure the wrapper (relative) contains the absolute gradient div */
+.relative > .gradient-border {
+  /* Already covers inset-0 via Tailwind's absolute inset-0 */
+}
+
+@keyframes bounce-slow {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-3px); }
+}
+.animate-bounce-slow {
+  animation: bounce-slow 2s infinite;
+}
+
