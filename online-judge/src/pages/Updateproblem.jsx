@@ -105,7 +105,7 @@ const Updateproblem = () => {
         const outputfile=e.target.files[0]
         data_output.append('name', outputfile.name);
         data_output.append('file', outputfile);
-        const response_output = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/getdetails_output` , {withCredentials:true});
+        const response_output = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/admin/getdetails_output`, data_output , {withCredentials:true});
         setselectedTestcase((prev) => ({...prev, expectedOutput:response_output.data.output}));
     }
   };
